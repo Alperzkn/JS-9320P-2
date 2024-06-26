@@ -213,31 +213,6 @@ const renderFilters = () => {
       homeworldInput.checked = true;
     }
 
-    /* homeworldInput.addEventListener("click", () => {
-      let filteredHomeworld;
-      if (homeworldInput.value === "other") {
-        filteredHomeworld = characters.filter((character) => {
-          character.homeworld === undefined;
-          console.log("1 " + filteredHomeworld);
-        });
-      } else if (homeworldInput.value === "all") {
-        filteredHomeworld = characters;
-        console.log("2 " + filteredHomeworld);
-      } else {
-        filteredHomeworld = characters.filter(
-          (character) => character.homeworld === homeworldList[i]
-        );
-        console.log("3 " + filteredHomeworld);
-      }
-      removeChars();
-      console.log(
-        "filteredHomeworld =    " +
-        filteredHomeworld.homeworld +
-          " " +
-          homeworldInputLabel
-      );
-      renderChars(filteredHomeworld);
-    }); */
   }
   let radioButtons = document.getElementsByName("homeworldInput");
   let prev = null;
