@@ -185,7 +185,7 @@ const changeCharVisibility = () => {
 // get unique values of array
 const getUniqueHomeWorld = () => {
   const homeworldRaw = characters.map(
-    // leave every values as it is and if it is undefined or null assign it to other --> ?? is like quick if - else
+    // leave every values as it is and if it is undefined or null assign it to other 
     (character) => character.homeworld ?? "other"
   );
   // turn every values of array to lower case
