@@ -1,3 +1,4 @@
+// json raw data
 const data = {
   characters: [
     {
@@ -116,30 +117,35 @@ const data = {
   ],
 };
 
-console.log(data);
-
+// get characters from raw data
 const characters = data.characters;
-console.log(characters);
 
+// get html element by id to append new elements
 const containerDiv = document.getElementById("card-container");
 const radioButtonsContainer = document.getElementById(
   "homeworld-radio-buttons"
 );
 const button = document.getElementById("button");
 
+// create boolean variable to use toogle button
 let isActive = false;
-console.log(isActive);
 
+// render character function
 const renderChars = (renderCharacters = characters) => {
+  // create new div element for html
   const row = document.createElement("div");
+  // add classlist for this element
   row.classList.add("row", "d-flex", "justify-content-center", "m-2");
+  // append new this row to html
   containerDiv.append(row);
 
+  // for loop to create every character card
   for (i = 0; i < characters.length; i++) {
-    //console.log(characters[i].pic, characters[i].name, characters[i].homeworld);
+    // create variables for card attributes
     let pic = renderCharacters[i].pic;
     let name = renderCharacters[i].name;
     let homeworld = (renderCharacters[i].homeworld ?? "other").toLowerCase();
+    // use variables with $ and back tick
     let cardHTMLData = `
     <div class="row m-2">
             <div class="card" style="width: 18rem;">
@@ -151,16 +157,17 @@ const renderChars = (renderCharacters = characters) => {
             </div>
         </div>
     `;
-
+    // append new elements with innerHTML
     row.innerHTML += cardHTMLData;
   }
 };
-
+// remove Character cards
 const removeChars = () => {
   const row = document.querySelector(".row");
   row.remove();
 };
 
+// Change visibility of cards with button
 const changeCharVisibility = () => {
   if (!isActive) {
     renderChars();
@@ -175,57 +182,74 @@ const changeCharVisibility = () => {
     console.log(isActive);
   }
 };
-
+// get unique values of array
 const getUniqueHomeWorld = () => {
   const homeworldRaw = characters.map(
+    // leave every values as it is and if it is undefined or null assign it to other --> ?? is like quick if - else
     (character) => character.homeworld ?? "other"
   );
+  // turn every values of array to lower case
   const homeworldRawLowerCase = homeworldRaw.map((homeworld) =>
     homeworld.toLowerCase()
   );
+  // remove duplicates in array and leave values as unique
   const uniqueHomeworldList = [...new Set(homeworldRawLowerCase)];
   console.log("homeworldRaw   ----->    " + homeworldRaw);
   console.log("homeworldRawLowerCase   ----->    " + homeworldRawLowerCase);
   console.log("uniqueHomeworldList   ----->    " + uniqueHomeworldList);
+
+  //this function returns uniqueHomeworldList
   return uniqueHomeworldList;
 };
 
+// render filter function
 const renderFilters = () => {
   homeworldList = getUniqueHomeWorld();
+  // added "all" to homeworldList array
   homeworldList.push("all");
 
+  // create input group
   for (i = 0; i < homeworldList.length; i++) {
     let homeworldInput = document.createElement("input");
     let homeworldInputLabel = document.createElement("label");
     homeworldInput.setAttribute("type", "radio");
     homeworldInput.name = "homeworldInput";
     homeworldInput.value = homeworldList[i];
+    // add classlists to html elements
     homeworldInput.classList.add("form-check-input");
     homeworldInputLabel.classList.add("form-check-label");
+    // add labels by order
     homeworldInputLabel = homeworldList[i];
+    // htmlFor -> link label and input
     homeworldInputLabel.htmlFor = homeworldList[i];
     console.log("homeworldInput label  ---->   " + homeworldInputLabel);
+    // to create html elements
     const div = document.createElement("div");
     containerDiv.append(div);
     containerDiv.append(homeworldInput);
     containerDiv.append(homeworldInputLabel);
+    // make "all" value checked as default
     if (homeworldInput.value === "all") {
       homeworldInput.checked = true;
     }
-
   }
+  // assign variable for radio buttons
   let radioButtons = document.getElementsByName("homeworldInput");
   let prev = null;
-
+  // create variables to use in for loop to get input value
   let filteredHomeworld;
   let radioButtonValue;
+  // to listen input value
   for (i = 0; i < radioButtons.length; i++) {
     radioButtons[i].addEventListener("change", function () {
       prev ? console.log("Previous value = " + prev.value) : null;
       if (this !== prev) {
+        // if previous value is not same assign new previous value
         prev = this;
+        // assign radiobutton value to input value
         radioButtonValue = this.value;
       }
+      // check input value and pass its value to filteredHomeWorld to render correct cards
       if (radioButtonValue === "all") {
         filteredHomeworld = characters;
         console.log("1 " + "filteredHomeworld = " + filteredHomeworld);
@@ -236,10 +260,12 @@ const renderFilters = () => {
         console.log("2 " + "filteredHomeworld = " + filteredHomeworld);
       } else {
         filteredHomeworld = characters.filter(
-          (character) => character.homeworld?.toLocaleLowerCase() === radioButtonValue
+          (character) =>
+            character.homeworld?.toLocaleLowerCase() === radioButtonValue
         );
         console.log("3 " + "filteredHomeworld = " + filteredHomeworld);
       }
+      // first remove cards then render new ones
       removeChars();
       renderChars(filteredHomeworld);
     });
